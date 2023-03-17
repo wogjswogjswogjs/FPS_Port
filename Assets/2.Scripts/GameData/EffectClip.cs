@@ -10,52 +10,49 @@ using UnityEngine;
 /// </summary>
 public class EffectClip
 {
-    public int dataId = 0;
-
     public EffectType effectType = EffectType.NORMAL;
     public GameObject effectPrefab = null;
     // effectName은 프리팹의 이름이고 effectPath는 프리팹이 위치한 경로이다.
-    public string effectPath = string.Empty;
+    public string effectPath = string.Empty; 
     public string effectName = string.Empty;
-    public string effectFullPath = string.Empty;
 
     public EffectClip()
     {
     }
-
-    public void Preload()
+    
+    /// <summary>
+    /// 이펙트를 로드하는 기능
+    /// </summary>
+    public void PreLoad()
     {
-        this.effectFullPath = effectPath + effectName;
-        if (effectFullPath != string.Empty && this.effectPrefab == null)
+        if (this.effectPath + effectName != string.Empty && this.effectPrefab == null)
         {
-            this.effectPrefab = ResourceManager.Load(effectFullPath) as GameObject;
+            this.effectPrefab = ResourceManager.Load(effectPath + effectName) as GameObject;
         }
     }
-
+    
+    /// <summary>
+    /// 메모리를 해제하는 기능.
+    /// </summary>
     public void ReleaseEffect()
     {
-        if (effectPrefab != null)
+        if (this.effectPrefab != null)
         {
             this.effectPrefab = null;
         }
     }
     
     /// <summary>
-    /// 원하는 위치에 내가 원하는 이펙트를 인스턴스화한다
+    /// 원하는 위치에 이펙트를 인스턴스화 한다.
     /// </summary>
     public GameObject Instantiate(Vector3 pos)
     {
         if (this.effectPrefab == null)
         {
-            this.Preload();
+            this.PreLoad();
         }
 
-        if (this.effectPrefab != null)
-        {
-            GameObject effect = GameObject.Instantiate(effectPrefab, pos, Quaternion.identity);
-            return effect;
-        }
-
-        return null;
+        GameObject effect = GameObject.Instantiate(effectPrefab, pos, Quaternion.identity);
+        return effect;
     }
 }
