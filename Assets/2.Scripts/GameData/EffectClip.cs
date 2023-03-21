@@ -10,6 +10,7 @@ using UnityEngine;
 /// </summary>
 public class EffectClip
 {
+    public int effectID = 0;
     public EffectType effectType = EffectType.NORMAL;
     public GameObject effectPrefab = null;
     // effectName은 프리팹의 이름이고 effectPath는 프리팹이 위치한 경로이다.
@@ -23,7 +24,7 @@ public class EffectClip
     /// <summary>
     /// 이펙트를 로드하는 기능
     /// </summary>
-    public void PreLoad()
+    public void LoadEffect()
     {
         if (this.effectPath + effectName != string.Empty && this.effectPrefab == null)
         {
@@ -49,7 +50,7 @@ public class EffectClip
     {
         if (this.effectPrefab == null)
         {
-            this.PreLoad();
+            this.LoadEffect();
         }
 
         GameObject effect = GameObject.Instantiate(effectPrefab, pos, Quaternion.identity);

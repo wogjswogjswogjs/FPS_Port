@@ -17,12 +17,10 @@ using UnityEditor;
 /// </summary>
 public class EffectData : BaseData
 {
-    private Dictionary<int, EffectClip> effectClips = null;
+    public List<EffectClip> effectClips = null;
     
     private string clipPath = "Prefabs/Effects/";
-    
-    private string jsonFileName = "/effectData.json";
-    private string jsonFilePath = "/EffectData";
+    private string jsonFileName = "effectData.json";
 
     private EffectData()
     {
@@ -34,19 +32,24 @@ public class EffectData : BaseData
     /// </summary>
     public void LoadData()
     {
+        if (effectClips == null)
+        {
+            effectClips = new List<EffectClip>();
+            dataNameList = new List<string>();
+        }
         // 제이슨 파일을 불러오는 작업
-        string jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFilePath +jsonFileName);
+        string jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFileName);
         EffectData effectData = JsonConvert.DeserializeObject<EffectData>(jdata);
         
         // 불러온 제이슨 파일을 바탕으로 데이터를 Load하는 과정
-        foreach (var item in effectData.effectClips)
+        foreach (var effectClip in effectData.effectClips)
         {
-            this.effectClips.Add(item.Key,item.Value);
+            this.effectClips.Add(effectClip);
         }
 
-        foreach (var item in effectData.dataNameList)
+        foreach (var dataName in effectData.dataNameList)
         {
-            this.dataNameList.Add(item);
+            this.dataNameList.Add(dataName);
         }
         
     }
@@ -56,109 +59,66 @@ public class EffectData : BaseData
     /// </summary>
     public void SaveData()
     {
-        // 데이터를 저장하기 전에 사용한 이펙트 게임오브젝트 메모리를 해제하는 작업.
-        foreach (var item in effectClips)
-        {
-            item.Value.ReleaseEffect();
-        }
         string jdata = JsonConvert.SerializeObject(this);
-        System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFilePath + jsonFileName, jdata);
+        System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFileName, jdata);
     }
-    
-    /// <summary>
-    /// effectClips에 데이터를 추가하는 함수
-    /// </summary>
-    public void AddData(int dataID, string dataName, EffectType effectType = EffectType.None)
+
+    public override int AddData(int dataID, string dataName)
     {
-        if (effectClips == null)
+        if (this.effectClips == null)
         {
-            effectClips = new Dictionary<int, EffectClip>();
+            this.effectClips = new List<EffectClip>();
+            this.dataNameList = new List<string>();
         }
 
-        if (dataNameList == null)
-        {
-            dataNameList = new List<string>();
-        }
-        
-        dataNameList.Add(dataID.ToString() + " - " +  dataName);
-        
-        effectClips.Add(dataID, new EffectClip());
-        effectClips[dataID].effectPath = this.clipPath;
-        effectClips[dataID].effectName = dataName;
-        effectClips[dataID].effectType = effectType;
+        EffectClip clip = new EffectClip();
+        clip.effectID = dataID;
+        this.effectClips.Add(clip);
+        this.dataNameList.Add(dataName);
+        return GetDataCount();
     }
-    
-    /// <summary>
-    /// effectClips에있는 데이터를 제거하는 함수
-    /// </summary>
-    public void RemoveData(int dataID)
+
+    public override void RemoveData(int index)
     {
-        if (effectClips.Count > 0)
-        {
-            // 혹시몰라서 메모리 한번더 해제
-            effectClips[dataID].ReleaseEffect();
-            effectClips.Remove(dataID);
-        }
-
-        if (effectClips.Count == 0)
-        {
-            effectClips = null;
-        }
-
-        if (dataNameList.Count == 0)
-        {
-            dataNameList = null;
-        }
+        this.effectClips.RemoveAt(index);
+        this.dataNameList.RemoveAt(index);
     }
-    
-    /// <summary>
-    /// effectClips의 모든 데이터를 제거하는 함수
-    /// </summary>
+
     public void ClearData()
     {
-        foreach (var clip in effectClips)
+        foreach (var clip in this.effectClips)
         {
-            clip.Value.ReleaseEffect();
+            clip.ReleaseEffect();
         }
 
-        effectClips = null;
-        dataNameList = null;
+        this.effectClips = null;
+        this.dataNameList = null;
     }
 
-    /// <summary>
-    /// effectClips의 데이터중 하나의 똑같이 복사하여,
-    /// 프리로딩 후 리턴하는 함수
-    /// </summary>
-    public EffectClip GetCopyClip(int dataID)
+    public EffectClip GetCopyEffect(int index)
     {
-        if (effectClips.ContainsKey(dataID) == false)
+        if (index < 0 || index >= this.effectClips.Count)
         {
             return null;
         }
 
-        EffectClip original = effectClips[dataID];
-        EffectClip clip = new EffectClip();
-        clip.effectPath = original.effectPath;
-        clip.effectName = original.effectName;
-        clip.effectType = original.effectType;
-        clip.PreLoad();
-        return clip;
+        EffectClip original = this.effectClips[index];
+        EffectClip retClip = new EffectClip();
+        retClip.effectPath = original.effectPath;
+        retClip.effectName = original.effectName;
+        retClip.effectType = original.effectType;
+        retClip.effectID = original.effectID;
+        return retClip;
     }
 
-    /// <summary>
-    /// effectClips의 데이터중 하나를 프리로딩 후
-    /// 리턴하는 함수
-    /// </summary>
-    public EffectClip GetClip(int dataID)
+    public EffectClip GetEffect(int index)
     {
-        if (effectClips.ContainsKey(dataID) == false)
+        if (index < 0 || index >= this.effectClips.Count)
         {
             return null;
         }
-
-        EffectClip effectClip = effectClips[dataID];
-        effectClip.PreLoad();
-        return effectClip;
+        
+        effectClips[index].LoadEffect();
+        return effectClips[index];
     }
-
 }
