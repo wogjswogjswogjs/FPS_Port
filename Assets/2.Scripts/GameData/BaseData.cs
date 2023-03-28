@@ -11,7 +11,7 @@ using UnityEngine;
 public class BaseData : ScriptableObject
 {
    public const string dataDirectory = "/9.Resources/Resources/Data/";
-   public List<string> dataNameList = null;
+   public List<string> dataNameList = new List<string>();
    
    public BaseData()
    {
@@ -45,7 +45,7 @@ public class BaseData : ScriptableObject
    }
    
 
-   public virtual int AddData(int dataID, string dataName)
+   public virtual int AddData()
    {
       return GetDataCount();
    }

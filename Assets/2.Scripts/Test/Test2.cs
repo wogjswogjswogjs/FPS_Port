@@ -8,8 +8,7 @@ using UnityEditor;
 
 public class Test2 : MonoBehaviour
 {
-    public EffectClip effectClip;
-    public GameObject testEffect;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +21,8 @@ public class Test2 : MonoBehaviour
         
     }
 
-    
+   
+
+
 
 }

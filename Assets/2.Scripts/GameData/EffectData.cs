@@ -17,11 +17,10 @@ using UnityEditor;
 /// </summary>
 public class EffectData : BaseData
 {
-    public List<EffectClip> effectClips = null;
+    public List<EffectClip> effectClips = new List<EffectClip>();
     
     private string clipPath = "Prefabs/Effects/";
     private string jsonFileName = "effectData.json";
-
     private EffectData()
     {
         
@@ -32,26 +31,11 @@ public class EffectData : BaseData
     /// </summary>
     public void LoadData()
     {
-        if (effectClips == null)
-        {
-            effectClips = new List<EffectClip>();
-            dataNameList = new List<string>();
-        }
         // 제이슨 파일을 불러오는 작업
         string jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFileName);
         EffectData effectData = JsonConvert.DeserializeObject<EffectData>(jdata);
-        
-        // 불러온 제이슨 파일을 바탕으로 데이터를 Load하는 과정
-        foreach (var effectClip in effectData.effectClips)
-        {
-            this.effectClips.Add(effectClip);
-        }
-
-        foreach (var dataName in effectData.dataNameList)
-        {
-            this.dataNameList.Add(dataName);
-        }
-        
+        effectClips = effectData.effectClips;
+        dataNameList = effectData.dataNameList;
     }
 
     /// <summary>
@@ -63,25 +47,20 @@ public class EffectData : BaseData
         System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFileName, jdata);
     }
 
-    public override int AddData(int dataID, string dataName)
+    public override int AddData()
     {
-        if (this.effectClips == null)
-        {
-            this.effectClips = new List<EffectClip>();
-            this.dataNameList = new List<string>();
-        }
-
-        EffectClip clip = new EffectClip();
-        clip.effectID = dataID;
-        this.effectClips.Add(clip);
-        this.dataNameList.Add(dataName);
+        EffectClip effectClip = new EffectClip();
+        effectClip.effectName = "NewEffect";
+        effectClips.Add(effectClip);
+        dataNameList.Add(effectClip.effectName);
+        
         return GetDataCount();
     }
 
     public override void RemoveData(int index)
     {
-        this.effectClips.RemoveAt(index);
-        this.dataNameList.RemoveAt(index);
+        effectClips.RemoveAt(index);
+        dataNameList.RemoveAt(index);
     }
 
     public void ClearData()
@@ -91,13 +70,13 @@ public class EffectData : BaseData
             clip.ReleaseEffect();
         }
 
-        this.effectClips = null;
-        this.dataNameList = null;
+        effectClips = null;
+        dataNameList = null;
     }
 
     public EffectClip GetCopyEffect(int index)
     {
-        if (index < 0 || index >= this.effectClips.Count)
+        if (effectClips[index] == null)
         {
             return null;
         }
@@ -113,7 +92,7 @@ public class EffectData : BaseData
 
     public EffectClip GetEffect(int index)
     {
-        if (index < 0 || index >= this.effectClips.Count)
+        if (effectClips[index] == null)
         {
             return null;
         }

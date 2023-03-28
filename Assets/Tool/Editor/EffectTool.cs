@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using PlasticGui.Configuration.CloudEdition.Welcome;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.EditorTools;
+using Object = System.Object;
 
 public class EffectTool : EditorWindow
 {
@@ -23,21 +26,86 @@ public class EffectTool : EditorWindow
     #endregion
 
     [MenuItem("Tools/Effect Tool")]
-    static void Init()
+    static void Show()
     {
         effectData = ScriptableObject.CreateInstance<EffectData>();
-       // effectData.LoadData();
-
+        effectData.LoadData();
+        
         EffectTool window = GetWindow<EffectTool>(false, "EffectTool");
+        ((EditorWindow)window).Show();
     }
 
     private void OnGUI()
     {
-        if (effectData == null)
+        if (effectData == null) return;
+        EditorGUILayout.BeginVertical();
         {
-            return;
-        }
+            //-----------------------------------------------------------------------------------
+            EditorGUILayout.BeginHorizontal();
+            {
+                if (GUILayout.Button("ADD", GUILayout.Width(uiWidthLarge)))
+                {
+                    effectData.AddData();
+                }
 
+                if (effectData.GetDataCount() > 1)
+                {
+                    if (GUILayout.Button("Remove", GUILayout.Width(uiWidthLarge)))
+                    {
+                        effectData.RemoveData(selection);
+                    }
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            //----------------------------------------------------------------------------------
+            EditorGUILayout.BeginHorizontal();
+            {
+                EditorGUILayout.BeginVertical(GUILayout.Width(uiWidthLarge));
+                {
+                    EditorGUILayout.Separator();
+                    EditorGUILayout.BeginVertical("box");
+                    {
+                        scrollPosition1 = EditorGUILayout.BeginScrollView(scrollPosition1);
+                        {
+                            selection = GUILayout.SelectionGrid(selection, effectData.GetNameList().ToArray(), 1);
+
+                        }
+                        EditorGUILayout.EndScrollView();
+                    }
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndVertical();
+                //-----------------------------------------------------------------------------------
+                EditorGUILayout.BeginVertical();
+                {
+                    scrollPosition2 = EditorGUILayout.BeginScrollView(scrollPosition2);
+                    {
+                        if (effectData.GetDataCount() > 0)
+                        {
+                            EditorGUILayout.BeginVertical();
+                            {
+                                EditorGUILayout.Separator();
+                                
+                                effectData.GetEffect(selection).effectID = EditorGUILayout.IntField("ID",
+                                    effectData.GetEffect(selection).effectID,GUILayout.Width(uiWidthLarge));
+                                effectData.dataNameList[selection] = EditorGUILayout.TextField("이름",
+                                    effectData.dataNameList[selection],
+                                    GUILayout.Width(uiWidthLarge));
+                                effectData.GetEffect(selection).effectType = (EffectType)EditorGUILayout.EnumPopup("이펙트 타입",
+                                    effectData.GetEffect(selection).effectType, GUILayout.Width(uiWidthLarge));
+                                
+                                EditorGUILayout.Separator();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+                    EditorGUILayout.EndScrollView();
+                }
+                EditorGUILayout.EndVertical();
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndVertical();
         
     }
 }
