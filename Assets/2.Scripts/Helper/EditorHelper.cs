@@ -46,4 +46,11 @@ public class EditorHelper
         }
         EditorGUILayout.EndVertical();
     }
+
+    public static string GetPath(UnityEngine.Object clip)
+    {
+        string retString = string.Empty;
+        retString = AssetDatabase.GetAssetPath(clip);
+        return null;
+    }
 }

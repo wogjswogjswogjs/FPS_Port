@@ -34,6 +34,7 @@ public class EffectData : BaseData
         // 제이슨 파일을 불러오는 작업
         string jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFileName);
         EffectData effectData = JsonConvert.DeserializeObject<EffectData>(jdata);
+        //EffectData effectData = JsonUtility.FromJson<EffectData>(jdata);
         effectClips = effectData.effectClips;
         dataNameList = effectData.dataNameList;
     }
@@ -44,7 +45,9 @@ public class EffectData : BaseData
     public void SaveData()
     {
         string jdata = JsonConvert.SerializeObject(this);
+        //string jdata = JsonUtility.ToJson(this);
         System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFileName, jdata);
+        
     }
 
     public override int AddData()
