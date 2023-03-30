@@ -21,6 +21,7 @@ public class EffectData : BaseData
     
     private string clipPath = "Prefabs/Effects/";
     private string jsonFileName = "effectData.json";
+    private string test = "FireEffect";
     private EffectData()
     {
         
@@ -31,10 +32,20 @@ public class EffectData : BaseData
     /// </summary>
     public void LoadData()
     {
-        // 제이슨 파일을 불러오는 작업
-        string jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFileName);
-        EffectData effectData = JsonConvert.DeserializeObject<EffectData>(jdata);
-        //EffectData effectData = JsonUtility.FromJson<EffectData>(jdata);
+        string jdata;
+        EffectData effectData;
+        
+        try
+        {
+            // 제이슨 파일을 불러오는 작업
+            jdata = System.IO.File.ReadAllText(Application.dataPath + dataDirectory + jsonFileName);
+            effectData = JsonConvert.DeserializeObject<EffectData>(jdata);
+        }
+        catch (Exception e)
+        {
+            return;
+        }
+        
         effectClips = effectData.effectClips;
         dataNameList = effectData.dataNameList;
     }
@@ -45,15 +56,15 @@ public class EffectData : BaseData
     public void SaveData()
     {
         string jdata = JsonConvert.SerializeObject(this);
-        //string jdata = JsonUtility.ToJson(this);
         System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFileName, jdata);
-        
     }
+    
 
     public override int AddData()
     {
         EffectClip effectClip = new EffectClip();
-        effectClip.effectName = "NewEffect";
+        effectClip.effectName = "New Effect";
+        effectClip.effectPath = clipPath;
         effectClips.Add(effectClip);
         dataNameList.Add(effectClip.effectName);
         

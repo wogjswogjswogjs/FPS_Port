@@ -13,9 +13,9 @@ public class BaseData : ScriptableObject
    public const string dataDirectory = "/9.Resources/Resources/Data/";
    public List<string> dataNameList = new List<string>();
    
-   public BaseData()
+   /*public BaseData()
    {
-   }
+   }*/
    
    public int GetDataCount()
    {

@@ -12,10 +12,9 @@ public class EffectClip
 {
     public int effectID = 0;
     public EffectType effectType = EffectType.NORMAL;
-    public GameObject effectPrefab = null;
-    // effectName은 프리팹의 이름이고 effectPath는 프리팹이 위치한 경로이다.
     public string effectPath = string.Empty; 
     public string effectName = string.Empty;
+    public GameObject effectPrefab = null;
 
     public EffectClip()
     {
@@ -26,7 +25,7 @@ public class EffectClip
     /// </summary>
     public void LoadEffect()
     {
-        if (this.effectPath + effectName != string.Empty && this.effectPrefab == null)
+        if (this.effectPrefab == null)
         {
             this.effectPrefab = ResourceManager.Load(effectPath + effectName) as GameObject;
         }
