@@ -21,7 +21,6 @@ public class EffectData : BaseData
     
     private string clipPath = "Prefabs/Effects/";
     private string jsonFileName = "effectData.json";
-    private string test = "FireEffect";
     private EffectData()
     {
         
@@ -48,6 +47,11 @@ public class EffectData : BaseData
         
         effectClips = effectData.effectClips;
         dataNameList = effectData.dataNameList;
+        
+        foreach (var clip in effectClips)
+        {
+            clip.LoadEffect();
+        }
     }
 
     /// <summary>
@@ -55,6 +59,10 @@ public class EffectData : BaseData
     /// </summary>
     public void SaveData()
     {
+        foreach (var clip in effectClips)
+        {
+            clip.ReleaseEffect();
+        }
         string jdata = JsonConvert.SerializeObject(this);
         System.IO.File.WriteAllText(Application.dataPath + dataDirectory + jsonFileName, jdata);
     }

@@ -20,7 +20,7 @@ public class SoundClip
     public List<float> checkTime = new List<float>();
     public List<float> setTime = new List<float>();
 
-    private AudioClip soundPrefab = null;
+    public AudioClip soundPrefab = null;
     public int currentLoop = 0;
     public float pitch = 1.0f;
     public float dopplerLevel = 1.0f;
@@ -59,10 +59,10 @@ public class SoundClip
         this.setTime.Add(0.0f);
     }
 
-    public void RemoveLoop(int index)
+    public void RemoveLoop()
     {
-        this.checkTime.RemoveAt(index);
-        this.setTime.RemoveAt(index);
+        this.checkTime.RemoveAt(checkTime.Count-1);
+        this.setTime.RemoveAt(setTime.Count-1);
     }
 
     public AudioClip GetSound()

@@ -20,7 +20,7 @@ public class EffectTool : EditorWindow
     
     // 이펙트 데이터들, 스크립터블 오브젝트 인스턴스
     private static EffectData effectData;
-
+    private EffectClip source;
     #endregion
 
     [MenuItem("Tools/Effect Tool")]
@@ -88,16 +88,26 @@ public class EffectTool : EditorWindow
                             EditorGUILayout.BeginVertical();
                             {
                                 EditorGUILayout.Separator();
+
+                                EffectClip effect = effectData.GetEffect(selection);
+                                effect.effectPrefab = (GameObject)EditorGUILayout.ObjectField("Effect Source",
+                                    effect.effectPrefab, typeof(GameObject),GUILayout.Width(uiWidthLarge));
+                                EditorGUILayout.Separator();
+                                effect.effectID = EditorGUILayout.IntField("Effect ID",
+                                    effect.effectID,GUILayout.Width(uiWidthLarge));
+                                effect.effectType = (EffectType)EditorGUILayout.EnumPopup("Effect Type",
+                                    effect.effectType, GUILayout.Width(uiWidthLarge));
+                                if (effect.effectPrefab != null)
+                                {
+                                    effect.effectPath = EditorGUILayout.TextField("Effect Path",
+                                        EditorHelper.GetPath(effect.effectPrefab), GUILayout.Width(uiWidthLarge));
                                 
-                                effectData.GetEffect(selection).effectID = EditorGUILayout.IntField("Effect ID",
-                                    effectData.GetEffect(selection).effectID,GUILayout.Width(uiWidthLarge));
-                                effectData.GetEffect(selection).effectType = (EffectType)EditorGUILayout.EnumPopup("Effect Type",
-                                    effectData.GetEffect(selection).effectType, GUILayout.Width(uiWidthLarge));
-                                effectData.dataNameList[selection] = EditorGUILayout.TextField("Effect Name",
-                                    effectData.dataNameList[selection], GUILayout.Width(uiWidthLarge));
-                                effectData.GetEffect(selection).effectName = effectData.dataNameList[selection];
-                                effectData.GetEffect(selection).effectPath = EditorGUILayout.TextField("Effect Path",
-                                    effectData.GetEffect(selection).effectPath, GUILayout.Width(uiWidthLarge));
+                                    effectData.dataNameList[selection] = EditorGUILayout.TextField("Effect Name",
+                                        effect.effectPrefab.name, GUILayout.Width(uiWidthLarge));
+                                    effect.effectName = effectData.dataNameList[selection];
+                                }
+
+                                
                                 EditorGUILayout.Separator();
                             }
                             EditorGUILayout.EndVertical();
