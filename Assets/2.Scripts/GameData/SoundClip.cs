@@ -59,10 +59,10 @@ public class SoundClip
         this.setTime.Add(0.0f);
     }
 
-    public void RemoveLoop()
+    public void RemoveLoop(int index)
     {
-        this.checkTime.RemoveAt(checkTime.Count-1);
-        this.setTime.RemoveAt(setTime.Count-1);
+        this.checkTime.RemoveAt(index);
+        this.setTime.RemoveAt(index);
     }
 
     public AudioClip GetSound()

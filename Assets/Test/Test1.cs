@@ -14,13 +14,12 @@ public class Test1 : MonoBehaviour
    public GameObject obj;
    public void Start()
    {
-       List<int> list = new List<int>();
-       list.Add(1);
-       list.RemoveAt(list.Count-1);
-       foreach (var VARIABLE in list)
-       {
-           Debug.Log(VARIABLE);
-       }
+        SoundData soundData = ScriptableObject.CreateInstance<SoundData>();
+        soundData.LoadData();
+        Debug.Log(soundData.soundClips[0].checkTime[0]);
+        
+        Debug.Log(soundData.soundClips[0].setTime[0]);
+        
 
-   }
+    }
 }

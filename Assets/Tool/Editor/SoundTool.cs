@@ -98,13 +98,18 @@ public class SoundTool : EditorWindow
                                     sound.playType, GUILayout.Width(uiWidthMiddle));
                                 if (sound.soundPrefab != null)
                                 {
+
                                     sound.soundPath = EditorGUILayout.TextField("Effect Path",
                                         EditorHelper.GetPath(sound.soundPrefab), GUILayout.Width(uiWidthMiddle));
                                     soundData.dataNameList[selection] = EditorGUILayout.TextField("Effect Name",
                                         sound.soundPrefab.name, GUILayout.Width(uiWidthMiddle));
                                     sound.soundName = soundData.dataNameList[selection];
                                     EditorGUILayout.Separator();
-                                    
+
+                                    sound.maxVolume = EditorGUILayout.FloatField("Max Volume",
+                                   sound.maxVolume, GUILayout.Width(uiWidthMiddle));
+                                    sound.hasLoop = EditorGUILayout.Toggle("hasLoop",
+                                        sound.hasLoop, GUILayout.Width(uiWidthMiddle));
                                     sound.pitch = EditorGUILayout.Slider("Pitch",
                                         sound.pitch, -3.0f, 3.0f, GUILayout.Width(uiWidthMiddle));
                                     sound.rolloffMode = (AudioRolloffMode)EditorGUILayout.EnumPopup("Volume Rolloff",
@@ -129,17 +134,26 @@ public class SoundTool : EditorWindow
                                         GUILayout.Label("Loop Step" + i, EditorStyles.boldLabel);
                                         if (GUILayout.Button("Remove", GUILayout.Width(uiWidthMiddle)))
                                         {
-                                            soundData.soundClips[selection].RemoveLoop();
+                                            soundData.soundClips[selection].RemoveLoop(i);
+                                           
                                         }
+                                       
+                                        SoundClip sound1 = soundData.soundClips[selection];
+                                        // 마지막 인덱스 데이터 삭제하면 에러발생함 수정해야함
+                                        // 기능은 문제없음.
+                                        sound1.checkTime[i] = EditorGUILayout.FloatField("check Time",
+                                            sound1.checkTime[i], GUILayout.Width(uiWidthLarge));
+                                        sound1.setTime[i] = EditorGUILayout.FloatField("set Time",
+                                            sound1.setTime[i], GUILayout.Width(uiWidthLarge));
+                                        
+                                        
+
                                     }
                                     EditorGUILayout.EndVertical();;
                                 }
 
                                 EditorGUILayout.Separator();
-                                sound.maxVolume = EditorGUILayout.FloatField("Max Volume",
-                                    sound.maxVolume, GUILayout.Width(uiWidthMiddle));
-                                sound.hasLoop = EditorGUILayout.Toggle("hasLoop",
-                                    sound.hasLoop, GUILayout.Width(uiWidthMiddle));
+                               
                             }
                             EditorGUILayout.EndVertical();
                         }
