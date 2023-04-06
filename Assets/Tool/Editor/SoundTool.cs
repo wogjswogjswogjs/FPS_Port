@@ -96,17 +96,29 @@ public class SoundTool : EditorWindow
                                 
                                 if (sound.soundPrefab != null)
                                 {
+
                                     sound.soundID = EditorGUILayout.IntField("Sound ID",
                                         sound.soundID,GUILayout.Width(uiWidthMiddle));
                                     sound.PLAYTYPE = (SOUNDPLAYTYPE)EditorGUILayout.EnumPopup("Sound Type",
                                         sound.PLAYTYPE, GUILayout.Width(uiWidthMiddle));
+
+
+
                                     sound.soundPath = EditorGUILayout.TextField("Effect Path",
                                         EditorHelper.GetPath(sound.soundPrefab), GUILayout.Width(uiWidthMiddle));
                                     soundData.dataNameList[selection] = EditorGUILayout.TextField("Effect Name",
                                         sound.soundPrefab.name, GUILayout.Width(uiWidthMiddle));
                                     sound.soundName = soundData.dataNameList[selection];
                                     EditorGUILayout.Separator();
+
                                     EditorGUILayout.Separator();
+
+
+                                    sound.maxVolume = EditorGUILayout.FloatField("Max Volume",
+                                   sound.maxVolume, GUILayout.Width(uiWidthMiddle));
+                                    sound.hasLoop = EditorGUILayout.Toggle("hasLoop",
+                                        sound.hasLoop, GUILayout.Width(uiWidthMiddle));
+
                                     sound.pitch = EditorGUILayout.Slider("Pitch",
                                         sound.pitch, -3.0f, 3.0f, GUILayout.Width(uiWidthMiddle));
                                     sound.rolloffMode = (AudioRolloffMode)EditorGUILayout.EnumPopup("Volume Rolloff",
@@ -125,6 +137,7 @@ public class SoundTool : EditorWindow
                                     {
                                         if (GUILayout.Button("Add Loop", GUILayout.Width(uiWidthMiddle)))
                                         {
+
                                             soundData.soundClips[selection].AddLoop();
                                         }
                                         for (int i = 0; i < soundData.soundClips[selection].checkTime.Count; i++)
@@ -146,10 +159,28 @@ public class SoundTool : EditorWindow
                                                 }
                                             }
                                             EditorGUILayout.EndVertical();
+
+                                            soundData.soundClips[selection].RemoveLoop(i);
+                                           
+
                                         }
+                                       
+                                        SoundClip sound1 = soundData.soundClips[selection];
+                                       
+                                        /*sound1.checkTime[i] = EditorGUILayout.FloatField("check Time",
+                                            sound1.checkTime[i], GUILayout.Width(uiWidthLarge));
+                                        sound1.setTime[i] = EditorGUILayout.FloatField("set Time",
+                                            sound1.setTime[i], GUILayout.Width(uiWidthLarge));
+                                        
+                                        
+*/
                                     }
                                     EditorGUILayout.Separator();
                                 }
+
+
+                                EditorGUILayout.Separator();
+
                             }
                             EditorGUILayout.EndVertical();
                         }
