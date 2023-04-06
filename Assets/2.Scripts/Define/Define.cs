@@ -1,12 +1,12 @@
-public enum EffectType
+public enum EFFECTTYPE
 {
-    None = -1,
+    NONE = -1,
     NORMAL,
 }
 
-public enum SoundPlayType
+public enum SOUNDPLAYTYPE
 {
-    None = -1,
+    NONE = -1,
     BGM,
     EFFECT,
     UI,

@@ -5,12 +5,14 @@ using UnityEngine;
 public class EffectManager : SingletonMonobehaviour<EffectManager>
 {
     private Transform effectRoot = null;
-    // Start is called before the first frame update
+    // 생성될 이펙트들은 이 컨테이너 안에 넣을것
+    public const string ContainerName = "EffectContainer";
+   
     void Start()
     {
         if (effectRoot == null)
         {
-            effectRoot = new GameObject("EffectRoot").transform;
+            effectRoot = new GameObject(ContainerName).transform;
             effectRoot.SetParent(transform);
         }
     }

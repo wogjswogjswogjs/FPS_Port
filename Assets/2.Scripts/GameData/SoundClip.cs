@@ -10,7 +10,7 @@ using UnityEngine.PlayerLoop;
 public class SoundClip
 {
     public int soundID = 0;
-    public SoundPlayType playType = SoundPlayType.None;
+    public SOUNDPLAYTYPE PLAYTYPE = SOUNDPLAYTYPE.NONE;
     public string soundName = string.Empty;
     public string soundPath = string.Empty;
     
@@ -27,7 +27,7 @@ public class SoundClip
     public AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
     public float minDistance = 10000.0f;
     public float maxDistance = 50000.0f;
-    public float sparialBlend = 1.0f;
+    public float spartialBlend = 1.0f;
 
     public float fadeTime1 = 0.0f;
     public float fadeTime2 = 0.0f;
@@ -59,10 +59,10 @@ public class SoundClip
         this.setTime.Add(0.0f);
     }
 
-    public void RemoveLoop()
+    public void RemoveLoop(int index)
     {
-        this.checkTime.RemoveAt(checkTime.Count-1);
-        this.setTime.RemoveAt(setTime.Count-1);
+        this.checkTime.RemoveAt(index);
+        this.setTime.RemoveAt(index);
     }
 
     public AudioClip GetSound()

@@ -14,13 +14,7 @@ public class Test1 : MonoBehaviour
    public GameObject obj;
    public void Start()
    {
-       List<int> list = new List<int>();
-       list.Add(1);
-       list.RemoveAt(list.Count-1);
-       foreach (var VARIABLE in list)
-       {
-           Debug.Log(VARIABLE);
-       }
-
+       float test = Mathf.Lerp(0.2f, 1.0f, 0.5f);
+       Debug.Log(test);
    }
 }

@@ -95,8 +95,8 @@ public class EffectTool : EditorWindow
                                 EditorGUILayout.Separator();
                                 effect.effectID = EditorGUILayout.IntField("Effect ID",
                                     effect.effectID,GUILayout.Width(uiWidthLarge));
-                                effect.effectType = (EffectType)EditorGUILayout.EnumPopup("Effect Type",
-                                    effect.effectType, GUILayout.Width(uiWidthLarge));
+                                effect.Effecttype = (EFFECTTYPE)EditorGUILayout.EnumPopup("Effect Type",
+                                    effect.Effecttype, GUILayout.Width(uiWidthLarge));
                                 if (effect.effectPrefab != null)
                                 {
                                     effect.effectPath = EditorGUILayout.TextField("Effect Path",

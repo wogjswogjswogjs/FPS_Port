@@ -11,7 +11,7 @@ using UnityEngine;
 public class EffectClip
 {
     public int effectID = 0;
-    public EffectType effectType = EffectType.NORMAL;
+    public EFFECTTYPE Effecttype = EFFECTTYPE.NORMAL;
     public string effectPath = string.Empty; 
     public string effectName = string.Empty;
     public GameObject effectPrefab = null;

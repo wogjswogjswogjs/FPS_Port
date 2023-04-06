@@ -107,7 +107,7 @@ public class EffectData : BaseData
         EffectClip retClip = new EffectClip();
         retClip.effectPath = original.effectPath;
         retClip.effectName = original.effectName;
-        retClip.effectType = original.effectType;
+        retClip.Effecttype = original.Effecttype;
         retClip.effectID = original.effectID;
         return retClip;
     }
