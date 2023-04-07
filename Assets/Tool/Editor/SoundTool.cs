@@ -1,5 +1,4 @@
 using System;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ public class SoundTool : EditorWindow
     private static SoundData soundData;
     
     [MenuItem("Tools/Sound Tool")]
-    static void Show()
+    static void Init()
     {
         soundData = ScriptableObject.CreateInstance<SoundData>();
         soundData.LoadData();
@@ -91,7 +90,7 @@ public class SoundTool : EditorWindow
                                 
                                 EditorGUILayout.Separator();
                                 sound.soundPrefab = (AudioClip)EditorGUILayout.ObjectField("Sound Source",
-                                    sound.soundPrefab, typeof(AudioClip),GUILayout.Width(uiWidthMiddle));
+                                    sound.soundPrefab, typeof(AudioClip), false,GUILayout.Width(uiWidthMiddle));
                                 EditorGUILayout.Separator();
                                 
                                 if (sound.soundPrefab != null)
@@ -112,12 +111,6 @@ public class SoundTool : EditorWindow
                                     EditorGUILayout.Separator();
 
                                     EditorGUILayout.Separator();
-
-
-                                    sound.maxVolume = EditorGUILayout.FloatField("Max Volume",
-                                   sound.maxVolume, GUILayout.Width(uiWidthMiddle));
-                                    sound.hasLoop = EditorGUILayout.Toggle("hasLoop",
-                                        sound.hasLoop, GUILayout.Width(uiWidthMiddle));
 
                                     sound.pitch = EditorGUILayout.Slider("Pitch",
                                         sound.pitch, -3.0f, 3.0f, GUILayout.Width(uiWidthMiddle));

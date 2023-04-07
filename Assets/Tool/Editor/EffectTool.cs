@@ -24,7 +24,7 @@ public class EffectTool : EditorWindow
     #endregion
 
     [MenuItem("Tools/Effect Tool")]
-    static void Show()
+    static void Init()
     {
         effectData = ScriptableObject.CreateInstance<EffectData>();
         effectData.LoadData();
@@ -91,7 +91,7 @@ public class EffectTool : EditorWindow
 
                                 EffectClip effect = effectData.GetEffect(selection);
                                 effect.effectPrefab = (GameObject)EditorGUILayout.ObjectField("Effect Source",
-                                    effect.effectPrefab, typeof(GameObject),GUILayout.Width(uiWidthLarge));
+                                    effect.effectPrefab, typeof(GameObject), true, GUILayout.Width(uiWidthLarge));
                                 EditorGUILayout.Separator();
                                 effect.effectID = EditorGUILayout.IntField("Effect ID",
                                     effect.effectID,GUILayout.Width(uiWidthLarge));
